@@ -206,7 +206,12 @@ class AdditionalFieldController {
         return Cache::rememberForever('custom_dropdowns_' . $id . '_' . app()->getLocale(), function() use($id) {
                     $additionalFieldDropdown = AdditionalFieldDropdown::with(['translations'])
                                     ->where('additional_field_id', $id)->get()->toArray();
-                    return array_map('replaceKey', $additionalFieldDropdown);
+                    $dropdowns = array_map('replaceKey', $additionalFieldDropdown);
+                    $finalDropdowns = array();
+                    foreach ($dropdowns as $dropdown) {
+                        $finalDropdowns[$dropdown['id']] = $dropdown;
+                    }
+                    return $finalDropdowns;
                 });
     }
 
