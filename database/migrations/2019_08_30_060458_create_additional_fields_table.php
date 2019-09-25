@@ -22,6 +22,7 @@ class CreateAdditionalFieldsTable extends Migration {
             $table->enum('is_default', [true, false])->nullable()->default('');
             $table->unsignedInteger('sequence_no');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -5,10 +5,13 @@ namespace Rohitpavaskar\AdditionalField\Models;
 use Config;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Rohitpavaskar\AdditionalField\Models\AdditionalFieldDropdown;
 use Rohitpavaskar\AdditionalField\Models\AdditionalFieldTranslation;
 
 class AdditionalField extends Model {
+    
+    use SoftDeletes;
 
     protected $fillable = ['id', 'name', 'mandatory', 'editable_by_user', 'parent_id', 'is_default', 'sequence_no'];
 
