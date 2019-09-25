@@ -23,8 +23,10 @@ class AdditionalFieldController {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $additionalFields = AdditionalField::with(['translations'])->get()->toArray();
-        return array_map('replaceKey', $additionalFields);
+        return Cache::rememberForever('custom_fields_' . app()->getLocale(), function() {
+                    $additionalFields = AdditionalField::with(['translations'])->get()->toArray();
+                    return array_map('replaceKey', $additionalFields);
+                });
     }
 
     /**
@@ -107,9 +109,11 @@ class AdditionalFieldController {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        $additionalField = AdditionalField::with(['translations'])
-                        ->where('id', $id)->get()->toArray();
-        return array_map('replaceKey', $additionalField);
+        return Cache::rememberForever('custom_dropdowns_' . $id . '_' . app()->getLocale(), function() use($id) {
+                    $additionalField = AdditionalField::with(['translations'])
+                                    ->where('id', $id)->get()->toArray();
+                    return array_map('replaceKey', $additionalField);
+                });
     }
 
     /**
