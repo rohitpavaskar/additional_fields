@@ -109,11 +109,9 @@ class AdditionalFieldController {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        return Cache::rememberForever('custom_dropdowns_' . $id . '_' . app()->getLocale(), function() use($id) {
-                    $additionalField = AdditionalField::with(['translations'])
-                                    ->where('id', $id)->get()->toArray();
-                    return array_map('replaceKey', $additionalField);
-                });
+        $additionalField = AdditionalField::with(['translations'])
+                        ->where('id', $id)->get()->toArray();
+        return array_map('replaceKey', $additionalField);
     }
 
     /**
@@ -205,9 +203,11 @@ class AdditionalFieldController {
      * @return \Illuminate\Http\Response
      */
     public function dropdowns($id) {
-        $additionalFieldDropdown = AdditionalFieldDropdown::with(['translations'])
-                        ->where('additional_field_id', $id)->get()->toArray();
-        return array_map('replaceKey', $additionalFieldDropdown);
+        return Cache::rememberForever('custom_dropdowns_' . $id . '_' . app()->getLocale(), function() use($id) {
+                    $additionalFieldDropdown = AdditionalFieldDropdown::with(['translations'])
+                                    ->where('additional_field_id', $id)->get()->toArray();
+                    return array_map('replaceKey', $additionalFieldDropdown);
+                });
     }
 
     function clearCache($key, $language) {
