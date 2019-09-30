@@ -20,6 +20,7 @@ class CreateAdditionalFieldsTable extends Migration {
             $table->enum('mandatory', [true, false])->nullable()->default('');
             $table->enum('editable_by_user', [true, false])->nullable()->default('');
             $table->enum('is_default', [true, false])->nullable()->default('');
+            $table->string('column_name');
             $table->unsignedInteger('sequence_no');
             $table->timestamps();
             $table->softDeletes();

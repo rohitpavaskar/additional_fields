@@ -3,7 +3,6 @@
 namespace Rohitpavaskar\AdditionalField\Http\Controllers;
 
 use Config;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -49,6 +48,8 @@ class AdditionalFieldController {
         $additionalFieldTranslation->language = $request->language;
         $additionalField->translations()->save($additionalFieldTranslation);
         $result = $additionalField->save();
+        $additionalField->column_name = 'column_' . $additionalField->id;
+        $additionalField->save();
         $optionArr = array();
         if (is_array($request->options)) {
             foreach ($request->options as $option) {
@@ -224,5 +225,5 @@ class AdditionalFieldController {
             }
         }
     }
-    
+
 }
