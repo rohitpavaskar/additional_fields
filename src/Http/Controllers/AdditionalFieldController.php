@@ -10,6 +10,7 @@ use Rohitpavaskar\Localization\Models\Language;
 use Rohitpavaskar\AdditionalField\Models\AdditionalField;
 use Rohitpavaskar\AdditionalField\Models\AdditionalFieldDropdown;
 use Rohitpavaskar\AdditionalField\Models\AdditionalFieldTranslation;
+use Rohitpavaskar\AdditionalField\Http\Requests\UpdateSequenceRequest;
 use Rohitpavaskar\AdditionalField\Models\AdditionalFieldDropdownTranslation;
 use Rohitpavaskar\AdditionalField\Http\Requests\StoreAdditionalFieldRequest;
 use Rohitpavaskar\AdditionalField\Http\Requests\UpdateAdditionalFieldRequest;
@@ -224,6 +225,23 @@ class AdditionalFieldController {
                 Cache::forget(str_replace("{{language}}", $language, $key));
             }
         }
+    }
+
+    public function updateSequence(UpdateSequenceRequest $request) {
+        $data = $request->additional_fields;
+        $sequence = 1;
+        for ($i = 0; $i < count($data); $i++) {
+            $id = $data[$i]['id'];
+            $additionalField = AdditionalField::find($id);
+            $additionalField->sequence_no = $sequence++;
+            $additionalField->save();
+        }
+        $this->clearCache('custom_fields_{{language}}', Config::get('app.fallback_locale'));
+        return response(
+                array(
+            "message" => __('translations.updated_msg', array('atttribute' => trans('translations.additional_field'))),
+            "status" => true,
+                ), 200);
     }
 
 }
