@@ -26,6 +26,11 @@ class AdditionalFieldController {
     public function index() {
         return Cache::rememberForever('custom_fields_' . app()->getLocale(), function() {
                     $additionalFields = AdditionalField::with(['translations'])->get()->toArray();
+                    foreach ($additionalFields as $key => $additionalField) {
+                        if ($additionalField['is_default']) {
+                            $additionalFields[$key]['text'] = trans('translations.default_field_' . $additionalField['column_name']);
+                        }
+                    }
                     return array_map('replaceKey', $additionalFields);
                 });
     }
