@@ -3,6 +3,7 @@
 namespace Rohitpavaskar\AdditionalField\Http\Controllers;
 
 use Config;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
