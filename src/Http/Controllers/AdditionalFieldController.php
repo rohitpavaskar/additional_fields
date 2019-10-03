@@ -187,7 +187,7 @@ class AdditionalFieldController {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy(Request $request, $id) {
         $addtionalField = AdditionalField::findOrFail($id);
         $addtionalField->delete();
         $this->clearCache('custom_fields_{{language}}', $request->language);
