@@ -119,7 +119,11 @@ class AdditionalFieldController {
     public function show($id) {
         $additionalField = AdditionalField::with(['translations'])
                         ->where('id', $id)->get()->toArray();
-        return array_map('replaceKey', $additionalField);
+        $additionalFieldArr = array_map('replaceKey', $additionalField);
+        if ($additionalFieldArr['type'] == 'dropdown') {
+            $additionalFieldArr['dropdowns'] = $this->dropdowns($id);
+        }
+        return $additionalFieldArr;
     }
 
     /**
@@ -193,10 +197,10 @@ class AdditionalFieldController {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id) {
+    public function destroy($id) {
         $addtionalField = AdditionalField::findOrFail($id);
         $addtionalField->delete();
-        $this->clearCache('custom_fields_{{language}}', $request->language);
+        $this->clearCache('custom_fields_{{language}}', Config::get('app.fallback_locale'));
         return response(
                 array(
             "message" => __('translations.deleted_msg', array('entity' => trans('translations.additional_field'))),
