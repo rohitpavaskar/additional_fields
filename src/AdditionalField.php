@@ -14,6 +14,7 @@ class AdditionalField {
      * @return void
      */
     public static function routes() {
+        Route::get('/additional-fields/update_sequence', '\Rohitpavaskar\AdditionalField\Http\Controllers\AdditionalFieldController@updateSequence');
         Route::get('/additional-fields/dropdowns/{id}', '\Rohitpavaskar\AdditionalField\Http\Controllers\AdditionalFieldController@dropdowns');
         Route::resource('/additional-fields', '\Rohitpavaskar\AdditionalField\Http\Controllers\AdditionalFieldController');
     }
