@@ -119,9 +119,12 @@ class AdditionalFieldController {
     public function show($id) {
         $additionalField = AdditionalField::with(['translations'])
                         ->where('id', $id)->get()->toArray();
-        $additionalFieldArr = array_map('replaceKey', $additionalField);
-        if ($additionalFieldArr['type'] == 'dropdown') {
-            $additionalFieldArr['dropdowns'] = $this->dropdowns($id);
+        $additionalFieldArr = array();
+        if ($additionalField) {
+            $additionalFieldArr = array_map('replaceKey', $additionalField)[0];
+            if ($additionalFieldArr['type'] == 'dropdown') {
+                $additionalFieldArr['dropdowns'] = $this->dropdowns($id);
+            }
         }
         return $additionalFieldArr;
     }
