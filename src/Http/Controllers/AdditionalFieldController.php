@@ -26,12 +26,18 @@ class AdditionalFieldController {
     public function index() {
         return Cache::rememberForever('custom_fields_' . app()->getLocale(), function() {
                     $additionalFields = AdditionalField::with(['translations'])->get()->toArray();
+                    $dropdownOptions = array();
                     foreach ($additionalFields as $key => $additionalField) {
                         if ($additionalField['is_default']) {
                             $additionalFields[$key]['text'] = trans('translations.default_field_' . $additionalField['column_name']);
+                        } elseif ($additionalField['type'] == 'dropdown' && !$additionalField['parent_id']) {
+                            $dropdownOptions[$additionalField['column_name']] = $this->dropdowns($additionalField['id']);
                         }
                     }
-                    return array_map('replaceKey', $additionalFields);
+                    return array(
+                        'fields' => array_map('replaceKey', $additionalFields),
+                        'dropdowns' => $dropdownOptions
+                    );
                 });
     }
 

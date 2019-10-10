@@ -15,12 +15,13 @@ class CreateAdditionalFieldsTable extends Migration {
         Schema::create('additional_fields', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->enum('type', ['dropdown', 'date', 'file', 'text', 'freetext'])->nullable();
+            $table->enum('type', ['dropdown', 'date', 'file', 'text', 'freetext', 'number', 'password', 'email'])->nullable();
             $table->unsignedInteger('parent_id')->nullable();
             $table->enum('mandatory', [true, false])->nullable()->default('');
             $table->enum('editable_by_user', [true, false])->nullable()->default('');
             $table->enum('is_default', [true, false])->nullable()->default('');
             $table->string('column_name')->nullable();
+            $table->text('validations')->nullable();
             $table->unsignedInteger('sequence_no')->default(0);
             $table->timestamps();
             $table->softDeletes();
