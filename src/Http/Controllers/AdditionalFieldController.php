@@ -3,11 +3,11 @@
 namespace Rohitpavaskar\AdditionalField\Http\Controllers;
 
 use Config;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Rohitpavaskar\Localization\Models\Language;
+use Rohitpavaskar\AdditionalField\Http\Requests\DropdownRequest;
 use Rohitpavaskar\AdditionalField\Models\AdditionalField;
 use Rohitpavaskar\AdditionalField\Models\AdditionalFieldDropdown;
 use Rohitpavaskar\AdditionalField\Models\AdditionalFieldTranslation;
@@ -232,7 +232,7 @@ class AdditionalFieldController {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function dropdowns(Request $request, $id) {
+    public function dropdowns(DropdownRequest $request, $id) {
         $parentId = '';
         if ($request->parent_id) {
             $parentId = $request->parent_id;
