@@ -54,6 +54,7 @@ class AdditionalFieldController {
         $additionalField->type = $request->type;
         $additionalField->parent_id = $request->parent_id;
         $additionalField->is_default = false;
+        $additionalField->validations = false;
         $additionalField->sequence_no = $sequenceNo;
         $additionalField->save();
         $additionalFieldTranslation = new AdditionalFieldTranslation();
@@ -145,6 +146,7 @@ class AdditionalFieldController {
     public function update(UpdateAdditionalFieldRequest $request, $id) {
         $additionalField = AdditionalField::findOrFail($id);
         $additionalField->parent_id = $request->parent_id;
+        $additionalField->validations = $request->validations;
         $result = $additionalField->save();
         AdditionalFieldTranslation::updateOrCreate(
                 ['additional_field_id' => $id, 'language' => $request->language], ['name' => $request->name]
