@@ -232,7 +232,7 @@ class AdditionalFieldController {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function dropdowns(DropdownRequest $request, $id) {
+    public function dropdowns($id, DropdownRequest $request) {
         $parentId = '';
         if ($request->parent_id) {
             $parentId = $request->parent_id;
