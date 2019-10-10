@@ -186,6 +186,11 @@ class AdditionalFieldController {
         }
 
         $this->clearCache('custom_dropdowns_' . $id . '_{{language}}', $request->language);
+        $allDrodownValues = AdditionalFieldDropdown::where('additional_field_id', $id)->get();
+        $this->clearCache('custom_dropdowns_' . $id . '_' . 0 . '_{{language}}', $request->language);
+        foreach ($allDrodownValues as $val) {
+            $this->clearCache('custom_dropdowns_' . $id . '_' . $val->id . '_{{language}}', $request->language);
+        }
         $this->clearCache('custom_fields_{{language}}', $request->language);
 
         if ($result) {
@@ -211,6 +216,8 @@ class AdditionalFieldController {
     public function destroy($id) {
         $addtionalField = AdditionalField::findOrFail($id);
         $addtionalField->delete();
+        AdditionalField::where('parent_id', $id)
+                ->update(['parent_id' => NULL]);
         $this->clearCache('custom_fields_{{language}}', Config::get('app.fallback_locale'));
         return response(
                 array(
@@ -225,9 +232,16 @@ class AdditionalFieldController {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function dropdowns($id) {
-        return Cache::rememberForever('custom_dropdowns_' . $id . '_' . app()->getLocale(), function() use($id) {
+    public function dropdowns(Request $request, $id) {
+        $parentId = '';
+        if ($request->parent_id) {
+            $parentId = $request->parent_id;
+        }
+        return Cache::rememberForever('custom_dropdowns_' . $id . '_' . $parentId . '_' . app()->getLocale(), function() use($id, $parentId) {
                     $additionalFieldDropdown = AdditionalFieldDropdown::with(['translations'])
+                                    ->when($parentId, function($query) use($parentId) {
+                                        return $query->where('parent_id', $parentId);
+                                    })
                                     ->where('additional_field_id', $id)->get()->toArray();
                     $dropdowns = array_map('replaceKey', $additionalFieldDropdown);
                     $finalDropdowns = array();
