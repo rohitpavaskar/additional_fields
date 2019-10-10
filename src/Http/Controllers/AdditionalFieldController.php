@@ -53,7 +53,7 @@ class AdditionalFieldController {
         $additionalField->name = $request->name;
         $additionalField->type = $request->type;
         $additionalField->parent_id = $request->parent_id;
-        $additionalField->is_default = true;
+        $additionalField->is_default = false;
         $additionalField->sequence_no = $sequenceNo;
         $additionalField->save();
         $additionalFieldTranslation = new AdditionalFieldTranslation();
