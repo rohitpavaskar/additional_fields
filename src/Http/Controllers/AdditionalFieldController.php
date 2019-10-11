@@ -152,6 +152,7 @@ class AdditionalFieldController {
                 ['additional_field_id' => $id, 'language' => $request->language], ['name' => $request->name]
         );
         $optionArr = array();
+        $optionIds = array();
         if (is_array($request->options)) {
             foreach ($request->options as $option) {
                 if (!isset($option['id'])) {
@@ -162,6 +163,7 @@ class AdditionalFieldController {
                         $dropdown->parent_id = $option['parent_id'];
                     }
                     $dropdown->save();
+                    array_push($optionIds, $dropdown->id);
                     $dropdown->translations()->save(new AdditionalFieldDropdownTranslation([
                         'name' => $option['name'],
                         'language' => $request->language,
@@ -170,6 +172,7 @@ class AdditionalFieldController {
                             ['additional_field_dropdown_id' => $dropdown->id, 'language' => Config::get('app.fallback_locale')], ['name' => $option['name']]
                     );
                 } else {
+                    array_push($optionIds, $option['id']);
                     $dropdown = AdditionalFieldDropdown::findOrFail($option['id']);
                     if (isset($option['parent_id'])) {
                         $dropdown->parent_id = $option['parent_id'];
@@ -184,7 +187,9 @@ class AdditionalFieldController {
                 }
             }
         }
-
+        AdditionalFieldDropdown::whereNotIn('id', $optionIds)
+                ->where('additional_field_id', $id)
+                ->delete();
         $this->clearCache('custom_dropdowns_' . $id . '_{{language}}', $request->language);
         $allDrodownValues = AdditionalFieldDropdown::where('additional_field_id', $id)->get();
         $this->clearCache('custom_dropdowns_' . $id . '_' . 0 . '_{{language}}', $request->language);
