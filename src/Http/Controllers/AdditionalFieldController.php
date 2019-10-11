@@ -233,7 +233,7 @@ class AdditionalFieldController {
      * @return \Illuminate\Http\Response
      */
     public function dropdowns($id) {
-        $parentId = request('parent_id', '');
+        $parentId = request('parent_id', 0);
 
         return Cache::rememberForever('custom_dropdowns_' . $id . '_' . $parentId . '_' . app()->getLocale(), function() use($id, $parentId) {
                     $additionalFieldDropdown = AdditionalFieldDropdown::with(['translations'])
