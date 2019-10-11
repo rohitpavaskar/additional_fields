@@ -93,6 +93,7 @@ class AdditionalFieldController {
                     break;
                 case 'file':
                     $table->string('custom_' . $additionalField->id)->nullable();
+                    $table->string('custom_' . $additionalField->id . '_original_name')->nullable();
                     break;
                 case 'text':
                     $table->string('custom_' . $additionalField->id)->nullable();
