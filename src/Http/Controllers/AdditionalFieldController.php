@@ -62,7 +62,7 @@ class AdditionalFieldController {
         $additionalFieldTranslation->language = $request->language;
         $additionalField->translations()->save($additionalFieldTranslation);
         $result = $additionalField->save();
-        $additionalField->column_name = 'column_' . $additionalField->id;
+        $additionalField->column_name = 'custom_' . $additionalField->id;
         $additionalField->save();
         $optionArr = array();
         if (is_array($request->options)) {
