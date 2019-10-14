@@ -56,6 +56,8 @@ class AdditionalFieldController {
         $additionalField->is_default = false;
         $additionalField->validations = false;
         $additionalField->sequence_no = $sequenceNo;
+        $additionalField->mandatory = ($request->mandatory) ? '1' : '';
+        $additionalField->editable_by_user = ($request->editable_by_user) ? '1' : '';
         $additionalField->save();
         $additionalFieldTranslation = new AdditionalFieldTranslation();
         $additionalFieldTranslation->name = $request->name;
@@ -148,6 +150,8 @@ class AdditionalFieldController {
         $additionalField = AdditionalField::findOrFail($id);
         $additionalField->parent_id = $request->parent_id;
         $additionalField->validations = $request->validations;
+        $additionalField->mandatory = ($request->mandatory) ? '1' : '';
+        $additionalField->editable_by_user = ($request->editable_by_user) ? '1' : '';
         $result = $additionalField->save();
         AdditionalFieldTranslation::updateOrCreate(
                 ['additional_field_id' => $id, 'language' => $request->language], ['name' => $request->name]
