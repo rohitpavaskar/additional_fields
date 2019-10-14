@@ -20,6 +20,7 @@ class CreateAdditionalFieldsTable extends Migration {
             $table->enum('mandatory', [true, false])->nullable()->default('');
             $table->enum('editable_by_user', [true, false])->nullable()->default('');
             $table->enum('is_default', [true, false])->nullable()->default('');
+            $table->enum('available_for_filters', [true, false])->nullable()->default('');
             $table->string('column_name')->nullable();
             $table->text('validations')->nullable();
             $table->unsignedInteger('sequence_no')->default(0);

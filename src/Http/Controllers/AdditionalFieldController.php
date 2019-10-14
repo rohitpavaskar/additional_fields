@@ -53,11 +53,12 @@ class AdditionalFieldController {
         $additionalField->name = $request->name;
         $additionalField->type = $request->type;
         $additionalField->parent_id = $request->parent_id;
-        $additionalField->is_default = '' ;
+        $additionalField->is_default = '';
         $additionalField->validations = '';
         $additionalField->sequence_no = $sequenceNo;
         $additionalField->mandatory = ($request->mandatory) ? '1' : '';
         $additionalField->editable_by_user = ($request->editable_by_user) ? '1' : '';
+        $additionalField->available_for_filters = ($request->available_for_filters) ? '1' : '';
         $additionalField->save();
         $additionalFieldTranslation = new AdditionalFieldTranslation();
         $additionalFieldTranslation->name = $request->name;
@@ -102,6 +103,9 @@ class AdditionalFieldController {
                     break;
                 case 'freetext':
                     $table->text('custom_' . $additionalField->id)->nullable();
+                    break;
+                case 'number':
+                    $table->unsignedBigInteger('custom_' . $additionalField->id)->nullable();
                     break;
             }
         });
@@ -152,6 +156,7 @@ class AdditionalFieldController {
         $additionalField->validations = $request->validations;
         $additionalField->mandatory = ($request->mandatory) ? '1' : '';
         $additionalField->editable_by_user = ($request->editable_by_user) ? '1' : '';
+        $additionalField->available_for_filters = ($request->available_for_filters) ? '1' : '';
         $result = $additionalField->save();
         AdditionalFieldTranslation::updateOrCreate(
                 ['additional_field_id' => $id, 'language' => $request->language], ['name' => $request->name]
