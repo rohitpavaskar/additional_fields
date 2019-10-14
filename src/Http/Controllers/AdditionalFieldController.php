@@ -231,7 +231,7 @@ class AdditionalFieldController {
         $this->clearCache('custom_fields_{{language}}', Config::get('app.fallback_locale'));
         return response(
                 array(
-            "message" => __('translations.deleted_msg', array('entity' => trans('translations.additional_field'))),
+            "message" => __('translations.deleted_msg', array('attribute' => trans('translations.additional_field'))),
             "status" => true,
                 ), 200);
     }
