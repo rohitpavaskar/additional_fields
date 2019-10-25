@@ -265,6 +265,33 @@ class AdditionalFieldController {
                 });
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function multiple_dropdowns($id) {
+        $parentIds = request('parent_ids', []);
+
+        $additionalField = AdditionalField::find($id);
+        $parentsDropdowns = $this->dropdowns($additionalField->parent_id);
+        $additionalFieldDropdown = AdditionalFieldDropdown::with(['translations'])
+                        ->when($parentIds, function($query) use($parentIds) {
+                            return $query->whereIn('parent_id', explode(',', $parentIds));
+                        })
+                        ->where('additional_field_id', $id)->get()->toArray();
+        $dropdowns = array_map('replaceKey', $additionalFieldDropdown);
+        $finalDropdowns = array();
+        foreach ($parentsDropdowns as $dp) {
+            $finalDropdowns[$dp['id']] = $dp;
+        }
+        foreach ($dropdowns as $dropdown) {
+            $finalDropdowns[$dropdown['parent_id']]['children'][$dropdown['id']] = $dropdown;
+        }
+        return $finalDropdowns;
+    }
+
     function clearCache($key, $language) {
         $languages = Language::all();
         Cache::forget(str_replace("{{language}}", $language, $key));
