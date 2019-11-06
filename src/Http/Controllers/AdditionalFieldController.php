@@ -284,7 +284,10 @@ class AdditionalFieldController {
         $dropdowns = array_map('replaceKey', $additionalFieldDropdown);
         $finalDropdowns = array();
         foreach ($parentsDropdowns as $dp) {
-            $finalDropdowns[$dp['id']] = $dp;
+            $ids = explode(',', $parentIds);
+            if (in_array($dp['id'], $ids) || !count($ids)) {
+                $finalDropdowns[$dp['id']] = $dp;
+            }
         }
         foreach ($dropdowns as $dropdown) {
             $finalDropdowns[$dropdown['parent_id']]['children'][] = $dropdown;
