@@ -287,7 +287,7 @@ class AdditionalFieldController {
             $finalDropdowns[$dp['id']] = $dp;
         }
         foreach ($dropdowns as $dropdown) {
-            $finalDropdowns[$dropdown['parent_id']]['children'][$dropdown['id']] = $dropdown;
+            $finalDropdowns[$dropdown['parent_id']]['children'][] = $dropdown;
         }
         return $finalDropdowns;
     }
