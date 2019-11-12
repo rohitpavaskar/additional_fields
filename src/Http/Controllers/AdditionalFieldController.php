@@ -201,7 +201,7 @@ class AdditionalFieldController {
                 ->where('additional_field_id', $id)
                 ->delete();
         $this->clearCache('custom_dropdowns_' . $id . '_{{language}}', $request->language);
-        $allDrodownValues = AdditionalFieldDropdown::where('additional_field_id', $id)->get();
+        $allDrodownValues = AdditionalFieldDropdown::where('additional_field_id', $request->parent_id)->get();
         $this->clearCache('custom_dropdowns_' . $id . '_' . 0 . '_{{language}}', $request->language);
         foreach ($allDrodownValues as $val) {
             $this->clearCache('custom_dropdowns_' . $id . '_' . $val->id . '_{{language}}', $request->language);
