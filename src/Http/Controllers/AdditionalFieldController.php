@@ -24,7 +24,7 @@ class AdditionalFieldController {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return Cache::rememberForever('custom_fields_' . app()->getLocale(), function() {
+//        return Cache::rememberForever('custom_fields_' . app()->getLocale(), function() {
                     $additionalFields = AdditionalField::with(['translations'])->get()->toArray();
                     $dropdownOptions = array();
                     foreach ($additionalFields as $key => $additionalField) {
@@ -38,7 +38,7 @@ class AdditionalFieldController {
                         'fields' => array_map('replaceKey', $additionalFields),
                         'dropdowns' => $dropdownOptions
                     );
-                });
+//                });
     }
 
     /**
@@ -250,7 +250,7 @@ class AdditionalFieldController {
     public function dropdowns($id) {
         $parentId = request('parent_id', 0);
 
-        return Cache::rememberForever('custom_dropdowns_' . $id . '_' . $parentId . '_' . app()->getLocale(), function() use($id, $parentId) {
+//        return Cache::rememberForever('custom_dropdowns_' . $id . '_' . $parentId . '_' . app()->getLocale(), function() use($id, $parentId) {
                     $additionalFieldDropdown = AdditionalFieldDropdown::with(['translations'])
                                     ->when($parentId, function($query) use($parentId) {
                                         return $query->where('parent_id', $parentId);
@@ -262,7 +262,7 @@ class AdditionalFieldController {
                         $finalDropdowns[$dropdown['id']] = $dropdown;
                     }
                     return $finalDropdowns;
-                });
+//                });
     }
 
     /**
