@@ -303,9 +303,7 @@ class AdditionalFieldController {
         $languages = Language::all();
         Cache::forget(str_replace("{{language}}", $language, $key));
         foreach ($languages as $language) {
-            if ($language->code == Config::get('app.fallback_locale')) {
-                Cache::forget(str_replace("{{language}}", $language, $key));
-            }
+            Cache::forget(str_replace("{{language}}", $language, $key));
         }
     }
 
