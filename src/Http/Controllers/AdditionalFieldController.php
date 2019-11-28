@@ -24,7 +24,7 @@ class AdditionalFieldController {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return Cache::rememberForever('custom_fields_' . app()->getLocale(), function() {
+        return Cache::tags(['additional_fields'])->rememberForever('custom_fields_' . app()->getLocale(), function() {
                     $additionalFields = AdditionalField::with(['translations'])->get()->toArray();
                     $dropdownOptions = array();
                     foreach ($additionalFields as $key => $additionalField) {
@@ -254,7 +254,7 @@ class AdditionalFieldController {
     public function dropdowns($id) {
         $parentId = request('parent_id', 0);
 
-        return Cache::rememberForever('custom_dropdowns_' . $id . '_' . $parentId . '_' . app()->getLocale(), function() use($id, $parentId) {
+        return Cache::tags(['additional_fields'])->rememberForever('custom_dropdowns_' . $id . '_' . $parentId . '_' . app()->getLocale(), function() use($id, $parentId) {
                     $additionalFieldDropdown = AdditionalFieldDropdown::with(['translations'])
                                     ->when($parentId, function($query) use($parentId) {
                                         return $query->where('parent_id', $parentId);
@@ -300,6 +300,7 @@ class AdditionalFieldController {
     }
 
     function clearCache($key, $language) {
+        Cache::tags('additional_fields')->flush();
         $languages = Language::all();
         Cache::forget(str_replace("{{language}}", $language, $key));
         foreach ($languages as $language) {
