@@ -29,7 +29,6 @@ class UpdateAdditionalFieldRequest extends FormRequest {
             'mandatory' => 'nullable',
             'editable_by_user' => 'nullable',
             'options' => 'required_if:type,dropdown',
-            'options.*.name' => 'distinct'
         ];
     }
 
