@@ -276,7 +276,7 @@ class AdditionalFieldController {
      * @return \Illuminate\Http\Response
      */
     public function multiple_dropdowns($id) {
-        $parentIds = request('parent_ids', []);
+        $parentIds = request('parent_ids', '');
 
         $additionalField = AdditionalField::find($id);
         $parentsDropdowns = $this->dropdowns($additionalField->parent_id);
