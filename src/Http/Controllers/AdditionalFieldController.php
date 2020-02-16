@@ -15,6 +15,7 @@ use Rohitpavaskar\AdditionalField\Http\Requests\UpdateSequenceRequest;
 use Rohitpavaskar\AdditionalField\Models\AdditionalFieldDropdownTranslation;
 use Rohitpavaskar\AdditionalField\Http\Requests\StoreAdditionalFieldRequest;
 use Rohitpavaskar\AdditionalField\Http\Requests\UpdateAdditionalFieldRequest;
+use Rohitpavaskar\AdditionalField\Events\AdditionalFieldCreatedEvent;
 
 class AdditionalFieldController {
 
@@ -113,6 +114,7 @@ class AdditionalFieldController {
         });
 
         if ($result) {
+            event(new AdditionalFieldCreatedEvent($additionalField));
             return response(
                     array(
                 "message" => __('translations.created_msg', array('attribute' => trans('translations.additional_field'))),
