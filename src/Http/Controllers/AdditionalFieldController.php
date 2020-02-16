@@ -41,8 +41,8 @@ class AdditionalFieldController {
                             'text' => trans('translations.text'),
                             'freetext' => trans('translations.free_text'),
                             'number' => trans('translations.number'),
-                            'password' => trans('translations.password'),
-                            'email' => trans('translations.email')
+                            'password' => trans('translations.type_password'),
+                            'email' => trans('translations.type_email')
                                 )[$additionalField['type']];
                     }
                     return array(
