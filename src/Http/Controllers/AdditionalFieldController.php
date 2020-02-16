@@ -34,6 +34,16 @@ class AdditionalFieldController {
                         } elseif ($additionalField['type'] == 'dropdown' && !$additionalField['parent_id']) {
                             $dropdownOptions[$additionalField['column_name']] = $this->dropdowns($additionalField['id']);
                         }
+                        $additionalFields[$key]['type_text'] = array(
+                            'dropdown' => trans('translations.dropdown'),
+                            'date' => trans('translations.date'),
+                            'file' => trans('translations.file'),
+                            'text' => trans('translations.text'),
+                            'freetext' => trans('translations.free_text'),
+                            'number' => trans('translations.number'),
+                            'password' => trans('translations.password'),
+                            'email' => trans('translations.email')
+                                )[$additionalField['type']];
                     }
                     return array(
                         'fields' => array_map('replaceKey', $additionalFields),
